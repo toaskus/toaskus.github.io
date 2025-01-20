@@ -1,8 +1,10 @@
 ---
-layout: single
-title:  "이렇게 시작합니다!"
+layout: post
+title:  "Welcome to Jekyll!"
 ---
 
-#새롭게 시작해보는 테스트
-*마크다운 문법 익히기
-#의미있는 짓인지 모르겠지만
+# Welcome
+
+**Hello world**, this is my first Jekyll blog post.
+
+I hope you like it!
