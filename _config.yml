@@ -313,5 +313,10 @@ defaults:
       share: true
       related: true
       show_date: true
+      toc: true
+      toc_sticky: true
+      toc_label: "목차"
+      toc_icon: "fa-regular fa-square-caret-down"
+      author_profile: false
 
 date_format: "%Y-%m-%d"
