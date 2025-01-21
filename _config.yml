@@ -121,19 +121,19 @@ author:
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      # url: "mailto:corey@ask-us.co.kr"
+      url: "mailto:corey@ask-us.co.kr"
     - label: "Website"
       icon: "fas fa-fw fa-link"
-      # url: "https://ask-us.co.kr"
+      url: "https://ask-us.co.kr"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
-      # url: "https://www.facebook.com/daniel.na.39948"
+      url: "https://www.facebook.com/daniel.na.39948"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url: "https://github.com/toaskus"
+      url: "https://github.com/toaskus"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
-      # url: "https://www.instagram.com/na.corey"
+      url: "https://www.instagram.com/na.corey"
 
 # Site Footer
 footer:
@@ -141,13 +141,13 @@ footer:
 
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
-      # url: "https://www.facebook.com/daniel.na.39948"
+      url: "https://www.facebook.com/daniel.na.39948"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url: "https://github.com/toaskus"
+      url: "https://github.com/toaskus"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
-      # url: "https://www.instagram.com/na.corey"
+      url: "https://www.instagram.com/na.corey"
 
 
 # Reading Files
