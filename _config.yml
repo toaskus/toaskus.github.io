@@ -130,7 +130,7 @@ author:
       url: "https://www.facebook.com/daniel.na.39948"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/toaskus"
+      # url: "https://github.com/toaskus"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
       url: "https://www.instagram.com/na.corey"
