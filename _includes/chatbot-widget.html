@@ -1,12 +1,12 @@
 <div id="chatbot-widget" class="chatbot-widget">
-  <button id="chat-toggle" class="chat-toggle" onclick="toggleChat()">
+  <button id="chat-toggle" class="chat-toggle">
     <i class="fas fa-comments"></i>
     교육 상담
   </button>
   <div id="chat-container" class="chat-container" style="display: none;">
     <div class="chat-header">
       <span>애스커스 교육 상담</span>
-      <button id="chat-close" class="chat-close" onclick="closeChat()">&times;</button>
+      <button id="chat-close" class="chat-close">&times;</button>
     </div>
     <iframe 
       src="https://toaskusappio-ft6yy9ffg4chptpofbansq.streamlit.app/?embed=true"
@@ -80,27 +80,27 @@ iframe {
 </style>
 
 <script>
-function toggleChat() {
-    console.log('Toggle clicked'); // 디버깅용 로그
-    var container = document.getElementById('chat-container');
-    if (container.style.display === 'none') {
-        container.style.display = 'block';
-    } else {
-        container.style.display = 'none';
-    }
-}
+$(document).ready(function() {
+    $('#chat-toggle').click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('#chat-container').toggle();
+    });
 
-function closeChat() {
-    console.log('Close clicked'); // 디버깅용 로그
-    document.getElementById('chat-container').style.display = 'none';
-}
+    $('#chat-close').click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('#chat-container').hide();
+    });
 
-// 외부 클릭 시 채팅창 닫기
-document.addEventListener('click', function(e) {
-    var container = document.getElementById('chat-container');
-    var toggle = document.getElementById('chat-toggle');
-    if (container && !container.contains(e.target) && e.target !== toggle) {
-        container.style.display = 'none';
-    }
+    $(document).click(function(e) {
+        if (!$(e.target).closest('#chatbot-widget').length) {
+            $('#chat-container').hide();
+        }
+    });
+
+    $('#chat-container').click(function(e) {
+        e.stopPropagation();
+    });
 });
 </script> 
