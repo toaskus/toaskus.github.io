@@ -67,15 +67,13 @@ class EducationChatbot:
         return response.text
 
 def main():
-    st.title("애스커스 교육 문의")
     st.markdown("""
-    ### 안녕하세요! 애스커스 챗봇입니다.
     교육 과정이나 커리큘럼에 대해 궁금하신 점을 자유롭게 물어보세요.
     """)
     
     chatbot = EducationChatbot()
     
-    user_input = st.text_input("질문을 입력하세요:")
+    user_input = st.text_input("")
     
     if user_input:
         if "과정" in user_input or "커리큘럼" in user_input:
@@ -83,7 +81,6 @@ def main():
         else:
             response = chatbot.answer_question(user_input)
             
-        st.markdown("### 답변:")
         st.write(response)
 
 if __name__ == "__main__":
