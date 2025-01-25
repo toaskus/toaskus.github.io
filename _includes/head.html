@@ -30,4 +30,41 @@
   {% endfor %}
 {% endif %}
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function initChatbot() {
+    const toggle = document.getElementById('chat-toggle');
+    const container = document.getElementById('chat-container');
+    const close = document.getElementById('chat-close');
+    
+    if (!toggle || !container || !close) {
+        console.log('Required elements not found');
+        return;
+    }
+    
+    toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        container.style.display = container.style.display === 'none' ? 'block' : 'none';
+    });
+    
+    close.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        container.style.display = 'none';
+    });
+    
+    // 외부 클릭 시 채팅창 닫기
+    document.addEventListener('click', function(e) {
+        if (!container.contains(e.target) && e.target !== toggle) {
+            container.style.display = 'none';
+        }
+    });
+}
+
+// DOM이 완전히 로드된 후 초기화
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initChatbot);
+} else {
+    initChatbot();
+}
+</script>

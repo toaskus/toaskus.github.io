@@ -9,10 +9,107 @@
       <button id="chat-close" class="chat-close">&times;</button>
     </div>
     <iframe 
-      src="https://your-chatbot-url.streamlit.app"
+      src="https://toaskusappio-ft6yy9ffg4chptpofbansq.streamlit.app/"
       width="100%" 
       height="100%" 
-      frameborder="0">
+      frameborder="0"
+      allow="camera;microphone"
+    >
     </iframe>
   </div>
-</div> 
+</div>
+
+<style>
+    .chatbot-widget {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+    
+    .chat-toggle {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .chat-container {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 380px;
+        height: 600px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        display: none;
+    }
+    
+    .chat-header {
+        padding: 12px;
+        background: #007bff;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 10px 10px 0 0;
+    }
+    
+    .chat-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+    }
+    
+    iframe {
+        width: 100%;
+        height: calc(100% - 44px);
+        border: none;
+        border-radius: 0 0 10px 10px;
+    }
+    </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.getElementById('chat-toggle');
+    const container = document.getElementById('chat-container');
+    const close = document.getElementById('chat-close');
+    
+    if (toggle && container && close) {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (container.style.display === 'none') {
+                container.style.display = 'block';
+            } else {
+                container.style.display = 'none';
+            }
+        });
+        
+        close.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            container.style.display = 'none';
+        });
+
+        // 외부 클릭 시 채팅창 닫기
+        document.addEventListener('click', function(e) {
+            if (!container.contains(e.target) && e.target !== toggle) {
+                container.style.display = 'none';
+            }
+        });
+    }
+});
+</script> 

@@ -67,13 +67,17 @@ class EducationChatbot:
         return response.text
 
 def main():
-    st.title("애스커스 교육 과정 추천 챗봇")
+    st.title("애스커스 교육 상담")
+    st.markdown("""
+    ### 안녕하세요! 애스커스 교육 상담 챗봇입니다.
+    교육 과정이나 커리큘럼에 대해 궁금하신 점을 자유롭게 물어보세요.
+    """)
     
     chatbot = EducationChatbot()
     
-    user_input = st.text_area("교육 대상과 교육시간, 어떤 교육이 필요한지 상세히 입력해 주세요.", height=100)
+    user_input = st.text_input("질문을 입력하세요:")
     
-    if st.button("답변 받기"):
+    if user_input:
         if "과정" in user_input or "커리큘럼" in user_input:
             response = chatbot.generate_curriculum(user_input)
         else:
