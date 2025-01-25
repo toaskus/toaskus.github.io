@@ -5,20 +5,17 @@
   </button>
   <div id="chat-container" class="chat-container" style="display: none;">
     <div class="chat-header">
-      <span>애스커스 교육 상담</span>
-      <button id="chat-close" class="chat-close">&times;</button>
+      <span>교육 상담</span>
+      <button id="chat-close" class="chat-close">×</button>
     </div>
-    <div class="chat-frame-container">
-      <iframe 
-        id="chat-frame"
-        src="https://toaskusappio-ft6yy9ffg4chptpofbansq.streamlit.app/?embed=true"
-        width="100%" 
-        height="100%" 
-        frameborder="0"
-        allow="camera;microphone"
-        loading="lazy"
-      ></iframe>
-    </div>
+    <iframe
+      id="chatbot-iframe"
+      src="https://toaskusappio-ft6yy9ffg4chptpofbansq.streamlit.app/?embed=true"
+      width="100%"
+      height="100%"
+      frameborder="0"
+      allow="camera; microphone"
+    ></iframe>
   </div>
 </div>
 
@@ -103,51 +100,54 @@ iframe {
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const toggle = document.getElementById('chat-toggle');
-    const container = document.getElementById('chat-container');
-    const close = document.getElementById('chat-close');
-    const frame = document.getElementById('chat-frame');
-
-    function showChat() {
-        container.style.display = 'block';
-        setTimeout(() => container.classList.add('show'), 10);
-        if (frame.getAttribute('data-loaded') !== 'true') {
-            frame.setAttribute('data-loaded', 'true');
+(function() {
+    // DOM이 완전히 로드된 후에 실행
+    function initChatbot() {
+        const toggle = document.getElementById('chat-toggle');
+        const container = document.getElementById('chat-container');
+        const closeBtn = document.getElementById('chat-close');
+        
+        if (!toggle || !container || !closeBtn) {
+            console.warn('Chatbot elements not found');
+            return;
         }
-    }
 
-    function hideChat() {
-        container.classList.remove('show');
-        setTimeout(() => container.style.display = 'none', 300);
-    }
-
-    toggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (container.style.display === 'none') {
-            showChat();
-        } else {
-            hideChat();
+        function showChat() {
+            container.style.display = 'flex';
         }
-    });
 
-    close.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        hideChat();
-    });
+        function hideChat() {
+            container.style.display = 'none';
+        }
 
-    document.addEventListener('click', function(e) {
-        if (!container.contains(e.target) && e.target !== toggle) {
-            if (container.classList.contains('show')) {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (container.style.display === 'none') {
+                showChat();
+            } else {
                 hideChat();
             }
-        }
-    });
+            e.stopPropagation();
+        });
 
-    container.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
-});
+        closeBtn.addEventListener('click', function(e) {
+            hideChat();
+            e.stopPropagation();
+        });
+
+        // 채팅창 외부 클릭시 닫기
+        document.addEventListener('click', function(e) {
+            if (!container.contains(e.target) && e.target !== toggle) {
+                hideChat();
+            }
+        });
+    }
+
+    // DOM 로드 상태 확인 후 초기화
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initChatbot);
+    } else {
+        initChatbot();
+    }
+})();
 </script> 
