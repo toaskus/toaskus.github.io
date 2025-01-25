@@ -1,6 +1,6 @@
 <div class="chatbot-container" id="chatbot-container">
   <div class="chat-header">
-    <span>애스커스 교육 상담</span>
+    <span>애스커스 교육 문의</span>
     <button id="chat-close" class="chat-close" aria-label="채팅 닫기">&times;</button>
   </div>
   <iframe
@@ -61,6 +61,14 @@
   z-index: 1000;
   display: none;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.chat-toggle i {
+  font-size: 20px;
 }
 
 @media (max-width: 768px) {
