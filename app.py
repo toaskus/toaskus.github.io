@@ -67,9 +67,9 @@ class EducationChatbot:
         return response.text
 
 def main():
-    st.title("애스커스 교육 상담")
+    st.title("애스커스 교육 문의")
     st.markdown("""
-    ### 안녕하세요! 애스커스 교육 상담 챗봇입니다.
+    ### 안녕하세요! 애스커스 챗봇입니다.
     교육 과정이나 커리큘럼에 대해 궁금하신 점을 자유롭게 물어보세요.
     """)
     
