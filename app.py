@@ -1,10 +1,18 @@
-import google.generativeai as genai
+import os
+from dotenv import load_dotenv
 import streamlit as st
-from typing import Dict, List
+
+load_dotenv()
 
 # Gemini API 설정
-GOOGLE_API_KEY = "AIzaSyAwWH15O5eCQXz908jTcPUkWuE_mYbgBfQ"
-genai.configure(api_key=GOOGLE_API_KEY)
+import google.generativeai as genai
+
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+if GOOGLE_API_KEY:
+    genai.configure(api_key=GOOGLE_API_KEY)
+else:
+    st.error("GOOGLE_API_KEY가 설정되지 않았습니다.")
+    st.stop()
 
 class EducationChatbot:
     def __init__(self):
