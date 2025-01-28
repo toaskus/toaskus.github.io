@@ -79,14 +79,17 @@ def main():
     
     if 'messages' not in st.session_state:
         st.session_state.messages = []
+        
+    if 'input_key' not in st.session_state:
+        st.session_state.input_key = 0
 
     # 이전 메시지들 표시
     for message in st.session_state.messages:
         role = "👤" if message["role"] == "user" else "🎓"
         st.write(f"{role}: {message['content']}")
 
-    # 사용자 입력
-    user_input = st.text_input("질문을 입력해주세요", key="user_input", on_change=clear_text)
+    # 사용자 입력 - 매번 새로운 key 사용
+    user_input = st.text_input("질문을 입력해주세요", key=f"user_input_{st.session_state.input_key}")
     
     if user_input:
         # 사용자 메시지 추가
@@ -98,6 +101,10 @@ def main():
         
         # 봇 응답 추가
         st.session_state.messages.append({"role": "assistant", "content": response})
+        
+        # 입력창 초기화를 위해 key 증가
+        st.session_state.input_key += 1
+        st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
