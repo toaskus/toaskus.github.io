@@ -77,16 +77,29 @@ def main():
     if 'messages' not in st.session_state:
         st.session_state.messages = []
 
+    # 이전 메시지들 표시
     for message in st.session_state.messages:
         role = "👤" if message["role"] == "user" else "🎓"
         st.write(f"{role}: {message['content']}")
 
-    user_input = st.text_input("질문을 입력해주세요", key="user_input")
+    # 사용자 입력
+    user_input = st.text_input("질문을 입력해주세요", key="user_input", value="")
     
     if user_input:
+        # 사용자 메시지 추가
         st.session_state.messages.append({"role": "user", "content": user_input})
-        response = st.session_state.bot.generate_response(user_input)
+        
+        # 생각하는 중 표시
+        with st.spinner("답변을 생성하고 있습니다..."):
+            response = st.session_state.bot.generate_response(user_input)
+        
+        # 봇 응답 추가
         st.session_state.messages.append({"role": "assistant", "content": response})
+        
+        # 입력창 초기화
+        st.session_state.user_input = ""
+        
+        # 화면 갱신
         st.rerun()
 
 if __name__ == "__main__":
