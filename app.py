@@ -92,24 +92,66 @@ class EducationChatbot:
         return response.text
 
 def main():
-    # 타이틀과 설명
+    # 채팅 버튼 (우측 하단에 고정)
     st.markdown("""
-    <div style="text-align: center; padding: 20px;">
-        <h1>👋 교육 문의 챗봇</h1>
-        <p>교육 과정이나 커리큘럼에 대해 궁금하신 점을 자유롭게 물어보세요.</p>
-    </div>
+        <div class="chat-button-container">
+            <button id="chat-button" class="chat-button">
+                <i class="fas fa-comments"></i>
+            </button>
+        </div>
+        
+        <style>
+        .chat-button-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .chat-button {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+        </style>
     """, unsafe_allow_html=True)
     
-    # 채팅창 토글 버튼
+    # 채팅 인터페이스
     if 'chat_visible' not in st.session_state:
         st.session_state.chat_visible = False
+        
+    # JavaScript로 버튼 클릭 이벤트 처리
+    st.markdown("""
+        <script>
+            document.getElementById('chat-button').addEventListener('click', function() {
+                window.parent.postMessage({type: 'toggleChat'}, '*');
+            });
+        </script>
+    """, unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns([4, 1, 4])
-    with col2:
-        if st.button('💬 채팅 시작하기' if not st.session_state.chat_visible else '❌ 채팅 닫기'):
-            st.session_state.chat_visible = not st.session_state.chat_visible
-    
-    # 채팅 인터페이스
     if st.session_state.chat_visible:
         chatbot = EducationChatbot()
         
@@ -140,27 +182,6 @@ def main():
             
             except Exception as e:
                 st.error("죄송합니다. 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.")
-
-    # 스타일 적용
-    st.markdown("""
-        <style>
-        .stButton > button {
-            width: 150px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 20px;
-            padding: 10px 20px;
-            border: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .stButton > button:hover {
-            background-color: #0056b3;
-        }
-        .stTextInput > div > div > input {
-            border-radius: 20px;
-        }
-        </style>
-    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
