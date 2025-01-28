@@ -64,10 +64,12 @@ class AskusEducationBot:
                     return "죄송합니다. 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."
                 time.sleep(RETRY_DELAY)
 
+def clear_text():
+    st.session_state["user_input"] = ""
+
 def main():
     st.markdown("<h3>애스커스 교육 상담 챗봇</h3>", unsafe_allow_html=True)
     
-    # 초기 세션 상태 설정
     if 'bot' not in st.session_state:
         try:
             st.session_state.bot = AskusEducationBot()
@@ -84,7 +86,7 @@ def main():
         st.write(f"{role}: {message['content']}")
 
     # 사용자 입력
-    user_input = st.text_input("질문을 입력해주세요", key="user_input", value="")
+    user_input = st.text_input("질문을 입력해주세요", key="user_input", on_change=clear_text)
     
     if user_input:
         # 사용자 메시지 추가
@@ -96,10 +98,6 @@ def main():
         
         # 봇 응답 추가
         st.session_state.messages.append({"role": "assistant", "content": response})
-        
-        # 입력창 초기화
-        st.session_state.user_input = ""
-        st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
