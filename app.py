@@ -19,6 +19,11 @@ class EducationChatbot:
     def __init__(self):
         self.model = genai.GenerativeModel('gemini-pro')
         self.course_data = self._load_course_data()
+        self.company_intro = """
+        애스커스는 코칭 기반 HRD 전문 교육 기업으로, 공공기관 및 일반 기업의 비전 달성과 성과 향상을 위한 
+        교육 솔루션을 제공합니다. 특히 AX(AI Transformation) 시대의 변화에 발맞춰 트렌디한 교육과 콘텐츠를 통해 
+        조직의 생존과 개인의 성장을 돕는 데 주력하고 있습니다.
+        """
         
     def _load_course_data(self) -> Dict:
         """교육 과정 데이터 로드"""
@@ -39,16 +44,25 @@ class EducationChatbot:
     def generate_curriculum(self, user_needs: str) -> str:
         """사용자 요구사항에 맞는 커리큘럼 생성"""
         prompt = f"""
-        다음은 사용자의 교육 요구사항입니다:
+        당신은 애스커스의 교육 전문가입니다. 다음 지침에 따라 답변해주세요:
+
+        1. 애스커스의 교육 철학과 전문성을 바탕으로 답변하세요.
+        2. 친절하고 상세하게 설명하되, 전문성이 드러나도록 합니다.
+        3. 답변 마지막에는 항상 추가 문의나 상담을 환영하는 멘트를 포함하세요.
+
+        사용자의 교육 요구사항:
         {user_needs}
-        
-        애스커스의 교육 과정을 기반으로 맞춤형 커리큘럼을 추천해주세요.
-        다음 형식으로 응답해주세요:
+
+        다음 형식으로 답변해주세요:
         1. 추천 교육 과정:
         2. 학습 목표:
         3. 세부 커리큘럼:
         4. 예상 소요 시간:
         5. 추천 이유:
+        6. 기대 효과:
+
+        마지막에 다음과 같은 문구를 포함해주세요:
+        "더 자세한 내용이나 맞춤형 교육 상담이 필요하시다면 언제든 문의해 주세요."
         """
         
         response = self.model.generate_content(prompt)
@@ -57,31 +71,117 @@ class EducationChatbot:
     def answer_question(self, question: str) -> str:
         """교육 관련 질문에 답변"""
         prompt = f"""
-        다음은 교육 과정에 대한 질문입니다:
-        {question}
-        
-        애스커스의 교육 전문가로서 답변해주세요.
+        당신은 애스커스의 교육 전문가입니다. 다음 지침을 따라 답변해주세요:
+
+        1. 애스커스의 전문성과 강점을 자연스럽게 포함하여 답변하세요.
+        2. 구체적인 교육 사례나 성과를 언급하여 신뢰성을 높이세요.
+        3. 친절하고 전문적인 톤으로 답변하세요.
+        4. 답변은 명확하고 구조적으로 작성하세요.
+        5. 항상 긍정적이고 해결책 중심적인 관점을 유지하세요.
+
+        질문: {question}
+
+        회사 소개:
+        {self.company_intro}
+
+        답변 마지막에는 반드시 다음과 같은 문구를 포함해주세요:
+        "추가로 궁금하신 점이나 상세한 교육 상담이 필요하시다면 언제든 문의해 주세요."
         """
         
         response = self.model.generate_content(prompt)
         return response.text
 
 def main():
+    # 채팅 버튼 (우측 하단에 고정)
     st.markdown("""
-    교육 과정이나 커리큘럼에 대해 궁금하신 점을 자유롭게 물어보세요.
-    """)
+        <div class="chat-button-container">
+            <button id="chat-button" class="chat-button">
+                <i class="fas fa-comments"></i>
+            </button>
+        </div>
+        
+        <style>
+        .chat-button-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .chat-button {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+        </style>
+    """, unsafe_allow_html=True)
     
-    chatbot = EducationChatbot()
+    # 채팅 인터페이스
+    if 'chat_visible' not in st.session_state:
+        st.session_state.chat_visible = False
+        
+    # JavaScript로 버튼 클릭 이벤트 처리
+    st.markdown("""
+        <script>
+            document.getElementById('chat-button').addEventListener('click', function() {
+                window.parent.postMessage({type: 'toggleChat'}, '*');
+            });
+        </script>
+    """, unsafe_allow_html=True)
     
-    user_input = st.text_input("")
-    
-    if user_input:
-        if "과정" in user_input or "커리큘럼" in user_input:
-            response = chatbot.generate_curriculum(user_input)
-        else:
-            response = chatbot.answer_question(user_input)
+    if st.session_state.chat_visible:
+        chatbot = EducationChatbot()
+        
+        # 세션 상태 초기화
+        if 'chat_history' not in st.session_state:
+            st.session_state.chat_history = []
+        
+        # 채팅 히스토리 표시
+        for chat in st.session_state.chat_history:
+            st.markdown(f"**🤖**: {chat['bot']}")
+            st.markdown("---")
+        
+        # 입력창
+        user_input = st.text_input("질문을 입력해주세요", key="user_input")
+        
+        if user_input:
+            try:
+                if "과정" in user_input or "커리큘럼" in user_input:
+                    response = chatbot.generate_curriculum(user_input)
+                else:
+                    response = chatbot.answer_question(user_input)
+                
+                if response and not response.startswith("죄송합니다"):
+                    st.session_state.chat_history.append({"bot": response})
+                    st.rerun()
+                else:
+                    st.error("죄송합니다. 응답을 생성하는 데 문제가 발생했습니다. 다시 시도해 주세요.")
             
-        st.write(response)
+            except Exception as e:
+                st.error("죄송합니다. 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.")
 
 if __name__ == "__main__":
     main()
