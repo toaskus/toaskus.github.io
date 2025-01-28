@@ -67,6 +67,7 @@ class AskusEducationBot:
 def main():
     st.markdown("<h3>애스커스 교육 상담 챗봇</h3>", unsafe_allow_html=True)
     
+    # 초기 세션 상태 설정
     if 'bot' not in st.session_state:
         try:
             st.session_state.bot = AskusEducationBot()
@@ -76,6 +77,9 @@ def main():
     
     if 'messages' not in st.session_state:
         st.session_state.messages = []
+    
+    if 'last_input' not in st.session_state:
+        st.session_state.last_input = ""
 
     # 이전 메시지들 표시
     for message in st.session_state.messages:
@@ -85,7 +89,10 @@ def main():
     # 사용자 입력
     user_input = st.text_input("질문을 입력해주세요", key="user_input")
     
-    if user_input:
+    # 새로운 입력이 있고, 이전 입력과 다를 때만 처리
+    if user_input and user_input != st.session_state.last_input:
+        st.session_state.last_input = user_input
+        
         # 사용자 메시지 추가
         st.session_state.messages.append({"role": "user", "content": user_input})
         
@@ -96,7 +103,7 @@ def main():
         # 봇 응답 추가
         st.session_state.messages.append({"role": "assistant", "content": response})
         
-        # 입력창 초기화를 위한 rerun
+        # 화면 갱신
         st.experimental_rerun()
 
 if __name__ == "__main__":
