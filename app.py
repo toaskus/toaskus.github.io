@@ -83,7 +83,7 @@ def main():
         st.write(f"{role}: {message['content']}")
 
     # 사용자 입력
-    user_input = st.text_input("질문을 입력해주세요", key="user_input", value="")
+    user_input = st.text_input("질문을 입력해주세요", key="user_input")
     
     if user_input:
         # 사용자 메시지 추가
@@ -96,11 +96,8 @@ def main():
         # 봇 응답 추가
         st.session_state.messages.append({"role": "assistant", "content": response})
         
-        # 입력창 초기화
-        st.session_state.user_input = ""
-        
-        # 화면 갱신
-        st.rerun()
+        # 입력창 초기화를 위한 rerun
+        st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
