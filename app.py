@@ -92,21 +92,75 @@ class EducationChatbot:
         return response.text
 
 def main():
+    # 타이틀과 설명
     st.markdown("""
-    교육 과정이나 커리큘럼에 대해 궁금하신 점을 자유롭게 물어보세요.
-    """)
+    <div style="text-align: center; padding: 20px;">
+        <h1>👋 교육 문의 챗봇</h1>
+        <p>교육 과정이나 커리큘럼에 대해 궁금하신 점을 자유롭게 물어보세요.</p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    chatbot = EducationChatbot()
+    # 채팅창 토글 버튼
+    if 'chat_visible' not in st.session_state:
+        st.session_state.chat_visible = False
     
-    user_input = st.text_input("")
+    col1, col2, col3 = st.columns([4, 1, 4])
+    with col2:
+        if st.button('💬 채팅 시작하기' if not st.session_state.chat_visible else '❌ 채팅 닫기'):
+            st.session_state.chat_visible = not st.session_state.chat_visible
     
-    if user_input:
-        if "과정" in user_input or "커리큘럼" in user_input:
-            response = chatbot.generate_curriculum(user_input)
-        else:
-            response = chatbot.answer_question(user_input)
+    # 채팅 인터페이스
+    if st.session_state.chat_visible:
+        chatbot = EducationChatbot()
+        
+        # 세션 상태 초기화
+        if 'chat_history' not in st.session_state:
+            st.session_state.chat_history = []
+        
+        # 채팅 히스토리 표시
+        for chat in st.session_state.chat_history:
+            st.markdown(f"**🤖**: {chat['bot']}")
+            st.markdown("---")
+        
+        # 입력창
+        user_input = st.text_input("질문을 입력해주세요", key="user_input")
+        
+        if user_input:
+            try:
+                if "과정" in user_input or "커리큘럼" in user_input:
+                    response = chatbot.generate_curriculum(user_input)
+                else:
+                    response = chatbot.answer_question(user_input)
+                
+                if response and not response.startswith("죄송합니다"):
+                    st.session_state.chat_history.append({"bot": response})
+                    st.rerun()
+                else:
+                    st.error("죄송합니다. 응답을 생성하는 데 문제가 발생했습니다. 다시 시도해 주세요.")
             
-        st.write(response)
+            except Exception as e:
+                st.error("죄송합니다. 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.")
+
+    # 스타일 적용
+    st.markdown("""
+        <style>
+        .stButton > button {
+            width: 150px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 20px;
+            padding: 10px 20px;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .stButton > button:hover {
+            background-color: #0056b3;
+        }
+        .stTextInput > div > div > input {
+            border-radius: 20px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
