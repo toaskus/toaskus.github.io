@@ -77,29 +77,29 @@ def main():
     
     if 'messages' not in st.session_state:
         st.session_state.messages = []
-    
-    if 'submitted' not in st.session_state:
-        st.session_state.submitted = False
 
     # 이전 메시지들 표시
     for message in st.session_state.messages:
         role = "👤" if message["role"] == "user" else "🎓"
         st.write(f"{role}: {message['content']}")
 
-    # 폼을 사용하여 입력 처리
-    with st.form(key="chat_form"):
-        user_input = st.text_input("질문을 입력해주세요", key="user_input")
-        submit_button = st.form_submit_button("전송")
-
-        if submit_button and user_input:
-            st.session_state.messages.append({"role": "user", "content": user_input})
-            
-            with st.spinner("답변을 생성하고 있습니다..."):
-                response = st.session_state.bot.generate_response(user_input)
-            
-            st.session_state.messages.append({"role": "assistant", "content": response})
-            st.session_state.submitted = True
-            st.experimental_rerun()
+    # 사용자 입력
+    user_input = st.text_input("질문을 입력해주세요", key="user_input", value="")
+    
+    if user_input:
+        # 사용자 메시지 추가
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        
+        # 생각하는 중 표시
+        with st.spinner("답변을 생성하고 있습니다..."):
+            response = st.session_state.bot.generate_response(user_input)
+        
+        # 봇 응답 추가
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        
+        # 입력창 초기화
+        st.session_state.user_input = ""
+        st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
