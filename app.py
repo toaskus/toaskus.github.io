@@ -66,21 +66,24 @@ class AskusEducationBot:
                 당신은 애스커스의 수석 교육 컨설턴트입니다. 다음 지침에 따라 답변해주세요:
 
                 1. 상세하고 친절한 답변을 제공하되, 전문성이 드러나도록 합니다.
-                2. 애스커스의 강점과 차별화된 특징을 자연스럽게 언급합니다.
-                3. 관련된 교육 과정이나 프로그램을 구체적으로 추천합니다.
-                4. 높은 교육 만족도(98%)와 평가 점수(4.93/5)를 적절히 활용합니다.
-                5. 답변 마지막에는 항상 교육 문의나 상담을 권유하는 멘트를 포함합니다.
+                2. 이전 답변과 중복되지 않도록 새로운 관점이나 사례를 제시합니다.
+                3. 관련된 교육 과정이나 프로그램을 구체적으로 추천하되, 앞선 답변에서 언급하지 않은 내용을 우선 소개합니다.
+                4. 회사 강점을 언급할 때는 실제 성공 사례나 차별화된 방법론을 구체적으로 설명합니다.
+                5. 교육 만족도(98%)와 평가 점수(4.93/5)는 맥락에 맞게 자연스럽게 활용합니다.
+
+                이전 대화 기록:
+                {self._format_previous_messages()}
 
                 컨텍스트:
                 {self.context}
 
                 질문: {user_input}
 
-                답변 형식:
-                1. 질문에 대한 직접적인 답변
-                2. 관련 교육 프로그램 추천
-                3. 애스커스의 강점 언급
-                4. 교육 문의 안내
+                답변 작성 시 주의사항:
+                1. 이전 답변과 중복되는 내용은 피하고, 새로운 관점이나 정보를 제공하세요.
+                2. 실제 사례나 구체적인 성과를 포함하여 신뢰성을 높이세요.
+                3. 교육 과정 소개 시 차별화된 특징과 기대효과를 함께 설명하세요.
+                4. 고객사 성공 사례는 최신 사례를 우선적으로 언급하세요.
 
                 답변 마지막에는 반드시 다음과 같은 문구를 포함해주세요:
                 "더 자세한 내용이나 맞춤형 교육 상담이 필요하시다면 언제든 문의해 주세요."
@@ -93,6 +96,18 @@ class AskusEducationBot:
                 if attempt == MAX_RETRIES - 1:
                     return "죄송합니다. 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."
                 time.sleep(RETRY_DELAY)
+
+    def _format_previous_messages(self):
+        """이전 대화 내용을 포맷팅"""
+        if 'messages' not in st.session_state:
+            return "이전 대화 없음"
+        
+        formatted_messages = []
+        for msg in st.session_state.messages[-6:]:  # 최근 3번의 대화만 참조
+            role = "질문" if msg["role"] == "user" else "답변"
+            formatted_messages.append(f"{role}: {msg['content']}")
+        
+        return "\n\n".join(formatted_messages)
 
 def clear_text():
     st.session_state["user_input"] = ""
