@@ -78,10 +78,10 @@ layout: default
   </article>
 
   {% comment %}<!-- only show related on a post page when `related: true` -->{% endcomment %}
-  {% if page.id and page.related and site.related_posts.size > 0 %}
-    {% include page__related.html posts=site.related_posts %}
-  {% comment %}<!-- otherwise show recent posts if no related when `related: true` -->{% endcomment %}
-  {% elsif page.id and page.related %}
-    {% include page__related.html posts=site.posts %}
+  {% if page.id and page.related and site.posts.size > 0 %}
+    {% assign cat = page.categories[0] %}
+    {% assign cat_posts = site.posts | where: "categories", cat %}
+    {% assign cat_posts = cat_posts | where_exp:"post","post.id != page.id" %}
+    {% include page__related.html posts=cat_posts %}
   {% endif %}
 </div>
