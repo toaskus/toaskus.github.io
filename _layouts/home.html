@@ -1,48 +1,20 @@
 ---
-layout: default
+layout: archive
 ---
 
-<div class="hero-editorial">
-  <div class="hero-editorial__inner">
-    <span class="hero-editorial__tag">Coaching &middot; HRD &middot; Education</span>
-    <h1 class="hero-editorial__title">질문하는 인간,<br>애스커스</h1>
-    <p class="hero-editorial__subtitle">{{ site.subtitle | default: "삶의 질문에 대한 답을 찾아가는 여정" }}</p>
-    <div class="hero-editorial__divider"></div>
-  </div>
+{{ content }}
+
+<h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
+
+{% if paginator %}
+  {% assign posts = paginator.posts %}
+{% else %}
+  {% assign posts = site.posts %}
+{% endif %}
+
+{% assign entries_layout = page.entries_layout | default: 'list' %}
+<div class="entries-{{ entries_layout }}">
+  {% include documents-collection.html entries=posts type=entries_layout %}
 </div>
 
-<div class="home-content">
-  {{ content }}
-
-  <h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
-
-  {% if paginator %}
-    {% assign posts = paginator.posts %}
-  {% else %}
-    {% assign posts = site.posts %}
-  {% endif %}
-
-  <div class="post-cards">
-    {% for post in posts %}
-    <article class="post-card">
-      <div class="post-card__meta">
-        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y.%m.%d" }}</time>
-        {% if post.categories.size > 0 %}
-          <span class="post-card__category">{{ post.categories | first }}</span>
-        {% endif %}
-      </div>
-      <h2 class="post-card__title">
-        <a href="{{ post.url | relative_url }}">{{ post.title | markdownify | remove: "<p>" | remove: "</p>" }}</a>
-      </h2>
-      {% if post.excerpt %}
-        <p class="post-card__excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
-      {% endif %}
-      <a href="{{ post.url | relative_url }}" class="post-card__link">
-        읽기 <span>&rarr;</span>
-      </a>
-    </article>
-    {% endfor %}
-  </div>
-
-  {% include paginator.html %}
-</div>
+{% include paginator.html %}
