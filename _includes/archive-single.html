@@ -23,8 +23,12 @@
       {% else %}
         <a href="{{ post.url | relative_url }}" rel="permalink">{{ title }}</a>
       {% endif %}
+      {% if include.pinned %}
+        <span class="pinned-post__badge"><i class="fas fa-thumbtack"></i> Notice</span>
+      {% endif %}
     </h2>
     {% include page__meta.html type=include.type %}
-    {% if post.excerpt %}<p class="archive__item-excerpt" itemprop="description">{{ post.excerpt | markdownify | strip_html | truncate: 160 }}</p>{% endif %}
+    {% assign excerpt_text = post.content | markdownify | strip_html | strip_newlines | truncate: 120 %}
+    {% if excerpt_text.size > 0 %}<p class="archive__item-excerpt" itemprop="description">{{ excerpt_text }}</p>{% endif %}
   </article>
 </div>

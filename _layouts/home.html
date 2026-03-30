@@ -6,15 +6,60 @@ layout: archive
 
 <h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
 
-{% if paginator %}
-  {% assign posts = paginator.posts %}
-{% else %}
-  {% assign posts = site.posts %}
-{% endif %}
-
 {% assign entries_layout = page.entries_layout | default: 'list' %}
-<div class="entries-{{ entries_layout }}">
-  {% include documents-collection.html entries=posts type=entries_layout %}
+
+<div id="post-list" class="entries-{{ entries_layout }}">
+  {% for post in site.posts %}
+    {% if post.pinned %}
+      {% include archive-single.html type=entries_layout pinned=true %}
+    {% endif %}
+  {% endfor %}
+  {% for post in site.posts %}
+    {% unless post.pinned %}
+      {% include archive-single.html type=entries_layout %}
+    {% endunless %}
+  {% endfor %}
 </div>
 
-{% include paginator.html %}
+<nav id="post-pagination" class="pagination" style="display:none;">
+  <button id="prev-page" class="pagination--pager" disabled>&laquo; Prev</button>
+  <span id="page-info" class="pagination--pager pagination--pager-info"></span>
+  <button id="next-page" class="pagination--pager">Next &raquo;</button>
+</nav>
+
+<script>
+(function() {
+  var perPage = 5;
+  var list = document.getElementById('post-list');
+  var items = list.querySelectorAll('.list__item');
+  if (items.length <= perPage) return;
+
+  var totalPages = Math.ceil(items.length / perPage);
+  var currentPage = 1;
+  var nav = document.getElementById('post-pagination');
+  var prev = document.getElementById('prev-page');
+  var next = document.getElementById('next-page');
+  var info = document.getElementById('page-info');
+  nav.style.display = '';
+
+  function render() {
+    var start = (currentPage - 1) * perPage;
+    var end = start + perPage;
+    for (var i = 0; i < items.length; i++) {
+      items[i].style.display = (i >= start && i < end) ? '' : 'none';
+    }
+    prev.disabled = currentPage === 1;
+    next.disabled = currentPage === totalPages;
+    info.textContent = currentPage + ' / ' + totalPages;
+  }
+
+  prev.addEventListener('click', function() {
+    if (currentPage > 1) { currentPage--; render(); }
+  });
+  next.addEventListener('click', function() {
+    if (currentPage < totalPages) { currentPage++; render(); }
+  });
+
+  render();
+})();
+</script>

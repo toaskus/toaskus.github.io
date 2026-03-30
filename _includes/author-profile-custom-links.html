@@ -1,7 +1,12 @@
-<!--
-  <li>
-    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
-      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
-    </a>
-  </li>
--->
+<!-- Category list in sidebar -->
+<li class="sidebar-categories">
+  <h3 class="sidebar-categories__title">Categories</h3>
+  <ul class="sidebar-categories__list">
+    {% assign sorted_cats = site.categories | sort %}
+    {% for cat in sorted_cats %}
+    <li class="sidebar-categories__item">
+      <a href="/categories/{{ cat[0] | slugify }}/">{{ cat[0] }} ({{ cat[1].size }})</a>
+    </li>
+    {% endfor %}
+  </ul>
+</li>

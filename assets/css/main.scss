@@ -9,3 +9,111 @@ search: false
 @import "minimal-mistakes"; // main partials
 
 
+/* ============================================
+   SIDEBAR CATEGORIES
+   ============================================ */
+
+.sidebar-categories {
+  list-style: none;
+  margin-top: 1.2em;
+  padding-top: 1em;
+  border-top: 1px solid #e0e0e0;
+  width: 100%;
+}
+
+.sidebar-categories__title {
+  font-size: 1em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+  margin: 0 0 0.6em;
+  padding: 0;
+}
+
+.sidebar-categories__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-categories__item {
+  margin-bottom: 0.35em;
+
+  a {
+    font-size: 1.05em;
+    color: #494e52;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #1a9c9e;
+    }
+  }
+}
+
+
+/* ============================================
+   PINNED POST
+   ============================================ */
+
+.pinned-post__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  font-size: 0.45em;
+  font-weight: 600;
+  color: #fff;
+  background: #F3B817;
+  border: 1px solid #e5ab0e;
+  border-radius: 3px;
+  padding: 0.2em 0.5em;
+  vertical-align: middle;
+  margin-left: 0.4em;
+
+  i {
+    font-size: 0.85em;
+  }
+}
+
+
+/* ============================================
+   POST PAGINATION
+   ============================================ */
+
+#post-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8em;
+  margin-top: 2em;
+}
+
+#post-pagination .pagination--pager {
+  cursor: pointer;
+  font-size: 0.85em;
+  padding: 0.5em 1.2em;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: #fff;
+  color: #494e52;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    border-color: #1a9c9e;
+    color: #1a9c9e;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.pagination--pager-info {
+  font-size: 0.82em;
+  color: #888;
+  border: none !important;
+  background: none !important;
+  cursor: default !important;
+}
