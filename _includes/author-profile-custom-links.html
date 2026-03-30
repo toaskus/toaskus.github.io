@@ -5,7 +5,7 @@
     {% assign sorted_cats = site.categories | sort %}
     {% for cat in sorted_cats %}
     <li class="sidebar-categories__item">
-      <a href="/categories/{{ cat[0] | slugify }}/">{{ cat[0] }} ({{ cat[1].size }})</a>
+      <a href="/categories/{{ cat[0] }}/">{{ cat[0] }} ({{ cat[1].size }})</a>
     </li>
     {% endfor %}
   </ul>

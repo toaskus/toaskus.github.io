@@ -1,7 +1,7 @@
 ---
-title: "Operation"
+title: "교육운영"
 layout: category
-permalink: /categories/operation/
+permalink: /categories/교육운영/
 author_profile: true
-taxonomy: Operation
+taxonomy: 교육운영
 ---

@@ -1,7 +1,7 @@
 ---
-title: "github"
+title: "깃허브"
 layout: category
-permalink: /categories/github/
+permalink: /categories/깃허브/
 author_profile: true
-taxonomy: github
+taxonomy: 깃허브
 ---
