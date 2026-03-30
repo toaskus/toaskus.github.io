@@ -1,22 +1,24 @@
-// Scroll reveal animation
+// Scroll reveal for post cards
 (function() {
-  var items = document.querySelectorAll('.list__item');
-  if (!items.length) return;
-
-  items.forEach(function(item) {
-    item.classList.add('reveal-on-scroll');
-  });
+  var cards = document.querySelectorAll('.post-card, .list__item');
+  if (!cards.length) return;
 
   var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
+    entries.forEach(function(entry, i) {
       if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
+        setTimeout(function() {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }, i * 80);
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.08 });
 
-  items.forEach(function(item) {
-    observer.observe(item);
+  cards.forEach(function(card) {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+    observer.observe(card);
   });
 })();

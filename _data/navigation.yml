@@ -1,8 +1,6 @@
 # main links
 main:
-- title: "Archive"
+- title: "Category"
   url: /categories/
-- title: "Tags"
-  url: /tags/
 - title: "Search"
   url: /search/
