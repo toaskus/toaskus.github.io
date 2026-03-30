@@ -275,9 +275,7 @@ whitelist:
 category_archive:
   type: liquid
   path: /categories/
-tag_archive:
-  type: liquid
-  path: /tags/
+# tag_archive: disabled
 # https://github.com/jekyll/jekyll-archives
 jekyll-archives:
   enabled:
